@@ -11,4 +11,5 @@
 # Client
 - cd client
 - yarn install
+- cd ios & pod install
 - react-native run-ios
