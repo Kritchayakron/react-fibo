@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import * as apiClient from './apiClient';
+import { act } from 'react-test-renderer';
 
 export type FiboListState = {
   fibo : [],
@@ -7,18 +8,19 @@ export type FiboListState = {
 };
 
 const initialState: FiboListState = {
-  fibo : [1],
+  fibo : [0,1],
   fiboValue : 1
 };
 export const fiboCal = createAsyncThunk(
   'fiboCal',
   async (data) => {
-    
+    //console.log(data);
     const response = await apiClient.fiboCal(data);
    
     if (response.kind === 'success') {
       return {
-        next: response.body ?? [],
+        next: response.next ?? [],
+        data: response.data ?? [],
         type : data.type
       };
     } else {
@@ -35,14 +37,12 @@ const fiboSlice = createSlice({
   extraReducers: (builder) => {
     builder
     .addCase(fiboCal.pending, (state) => {
-      // console.log('pending');
     })
     .addCase(fiboCal.fulfilled, (state, action) => {
-     
+      //console.log(action.payload)
       state.fiboValue = action.payload.next
-      console.log(action.payload);
       if(action.payload.type == 'plus') {
-        state.fibo.push(action.payload.next);
+        state.fibo = action.payload.data;
       } else{
         if(state.fibo.length > 1) {
           state.fibo.pop();

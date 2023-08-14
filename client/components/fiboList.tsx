@@ -8,7 +8,15 @@ const UserList: FunctionComponent = () => {
   const dispatch = useDispatch();
   const screenState = useSelector((state: RootState) => state.fiboList);
   const handleOnEndReached = (type) => () => {
-    dispatch(fiboCal({data:screenState.fibo,type:type}));
+    //
+    let sendingData = [...screenState.fibo]
+    if(type == 'minus') {
+      sendingData.pop(); // remove prev
+    } else {
+      sendingData.push(screenState.fiboValue);
+    }
+    //console.log('sending after:'+ sendingData);
+    dispatch(fiboCal({data:sendingData,type:type}));
   };
   return (
     <>

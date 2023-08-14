@@ -11,10 +11,12 @@ export const fiboCal = async (
 ): Promise<NetworkResponse> => {
 
   const response = await axios.post(baseUrl+'/api/fibo',options)
+  console.log(response.data)
   if(response.data) {
     return {
       kind: 'success',
-      body: response.data.next
+      next: response.data.next,
+      data: response.data.data
     };
   } else {
     return {
